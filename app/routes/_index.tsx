@@ -55,8 +55,8 @@ export default function Index() {
 
 const resources = [
   {
-    href: "https://github.com/book00311/book-react-app#",
-    text: "Lab01: Default The Ghost App",
+    href: "http://localhost:5173/",
+    text: "Lab01 | (08/07/68)",
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -77,7 +77,7 @@ const resources = [
   },
   {
     href: "http://localhost:5173/book-lab02",
-    text: "Lab02: First Component",
+    text: "Lab02 | (17/07/68)",
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -97,8 +97,8 @@ const resources = [
     ),
   },
   {
-    href: "https://remix.run/docs",
-    text: "Lab03: Profile Component",
+    href: "http://localhost:5173/book-lab03",
+    text: "Lab03 | (24/07/68)",
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
