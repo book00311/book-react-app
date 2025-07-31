@@ -1,5 +1,6 @@
 import Profile from "./components/Profile";
-import Contact from "./components/contact";
+import Contact from "./components/Contact";
+import Foots from "./components/Foots";
 export default function MyProfile(){
     return(
         <>
@@ -13,6 +14,7 @@ export default function MyProfile(){
     </div>
        <div className="ps-5 pe-5 pt-1 pb-1 bg-sky-700 text-pink-50 rounded w-16 flex justify-center mt-5"><a href="/">Back</a>
         </div>
+        <Foots title={"My Footer | Papangkorn"}></Foots>    
         </>
     );
 }
