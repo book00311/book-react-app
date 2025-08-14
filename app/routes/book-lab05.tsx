@@ -1,40 +1,38 @@
+import { useState } from "react";
 import Foots from "./components/Foots";
 import Header from "./components/Header";
+import { MyTeamProject } from "./data/termproject";
 
-export default function MyTeamProject(){
+export default function Lab05(){
+    const [isTeam, setIsTeam] = useState(null);
+
+    const handleTeam = (isTeam : any)=>{
+        setIsTeam(isTeam);
+    }
     const myPage = "Book Team Project";
     const myName = "Papangkorn Boontam";
     const myStudID ="026730491002-4";
-    const MyTeamProject = [
-    {
-        tpID: 1, 
-        tpSubject:"Web Technology",
-        tpDesc:"สร้างเว็ปท่องเที่่ยว",
-        tpCover:"/images/projects/project.png",
-        tpUrl:"http://busitlab.rmutto.ac.th/~026730491009-9/project-travel/home.html",
-        tpTeam:true
-    },
-    {
-        tpID: 2 ,
-         tpSubject:"Web Technology" ,
-         tpDesc:"เว็ปเก็บข้อมูลสัตว์เลี้ยง",
-         tpCover:"/images/projects/project1.png",
-         tpUrl:"http://busitlab.rmutto.ac.th/~026730491002-4/week10-ch073/",
-         tpTeam:false
-    },
-    {
-        tpID: 3 ,
-         tpSubject:"Web Technology" ,
-         tpDesc:"สุ่มสัตว์เลี้ยง",
-         tpCover:"/images/projects/project2.png",
-         tpUrl:"http://busitlab.rmutto.ac.th/~026730491002-4/week06-ch051/ch051_1002-4.html",
-         tpTeam:false
+   
+    const tpSingle = MyTeamProject.filter(tpTmp => {
+        if(isTeam == null)
+        return tpTmp.tpTeam==true || tpTmp.tpTeam==false
+        else
+        return tpTmp.tpTeam == isTeam
+});
+    const handleClick = (tpId : any, ind : any)=>{
+        let myOut = "";
+        let myObj = MyTeamProject[ind];
+        myOut+="[ข้อมูลโปรเจค]\n"
+        myOut+="[รหัส ID : ]"+myObj.tpID+"\n";
+        myOut+="[รายวิชา SUBJECT : ]"+myObj.tpSubject+"\n";
+        myOut+="[ชื่อโปรเจค NAME PROJECT : ]"+myObj.tpDesc+"\n";
+        myOut+="[รูปประกรอบ PICTURE: ]"+myObj.tpCover+"\n";
+        myOut+="[ลิ้งผลงาน LINK : ]"+myObj.tpUrl+"\n";
+        myOut+="[ประเภทการทำงาน TEAM : ]"+myObj.tpTeam+"\n";
+        myOut+="\n ThankYou ";
+        alert(myOut);
     }
-];
-    const tpSingle = MyTeamProject.filter(tpTmp =>
-        tpTmp.tpTeam==true
-    )
-    const myTeamProject = MyTeamProject.map((tpObj,index)=>
+    const myTeamProject = tpSingle.map((tpObj,index)=>
     <div className="grid grid-cols-5 mx-auto border-gray-300"key={index}>
         <div className="w-32 p-1">
     <img src={tpObj.tpCover} className="w-full rounded-full" title={tpObj.tpSubject+"ID : "+tpObj.tpID} />
@@ -45,7 +43,9 @@ export default function MyTeamProject(){
         <ItemTeam isTeam={tpObj.tpTeam}/>
         </div>
     <div className="p-4 mb-auto">
-    <a href={tpObj.tpUrl} className="bg-indigo-600 text-white rounded-sm hover:bg-indigo-700 px-10 py-2">Preview</a>
+    <a href="#" className="bg-indigo-600 text-white rounded-sm hover:bg-indigo-700 px-10 py-2"
+    onClick={() => handleClick(tpObj.tpID,index)}
+    >Preview</a>
     </div>
     </div>
 );
@@ -56,9 +56,24 @@ export default function MyTeamProject(){
         <p className="text-xl m-3 text-center">
         Name : {myName} | Student ID : {myStudID}
         </p>
+        <div className="w-1/2 grid mx-auto h-100 overflow-auto rounded-2xl border border-gray-300 flex justify-center grid grid-cols-3 gap-2">
+        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" onClick={()=> handleTeam(null)}>
+            [A] All
+        </button>
+        <button className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"onClick={()=> handleTeam(true)}>
+            [T] Team
+        </button>
+        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"onClick={()=> handleTeam(false)}>
+            [S] Single
+        </button>
+        </div>
+        
         <div className="w-1/2 grid mx-auto h-100 overflow-auto rounded-2xl border border-gray-300">
             {myTeamProject}
         </div>
+         <h3 className="w-1/2 mx-auto rounded-2xl flex justify-center">
+        จำนวน{MyTeamProject.length}รายการ
+            </h3>
         <Foots title="My footer | Papangkorn"/>
         </>
     );
