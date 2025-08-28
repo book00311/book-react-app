@@ -1,6 +1,8 @@
+import Index from "./_index";
+import Footer from "./components/Foots";
 import Foots from "./components/Foots";
 import Header from "./components/Header";
-import { useState } from "react";
+import { useEffect, useState } from "react";
  
 export default function MyTermProject () {
  
@@ -12,11 +14,17 @@ export default function MyTermProject () {
             bookAuthor : "papangkorn",
             bookCover : "./images/book.jpg"
         });
-        const [nextId, setNextId] = useState(0);
+        const [nextId, setNextId] = useState(1);
         const [books, setBooks] = useState([]);
+        const [bookId, setBookId] = useState(0);
+        const [count, setCount] = useState(0);
+
+        useEffect(() => {
+          setCount(books.length);
+        },[books.length]);
  
     const myPage = "Book Term Project"
-    const myName = "Papangkorn boontam"
+    const myName = "Papangkorn Boontam"
     const myStudID = "026730491002-4"
  
     const addBook = (e) => {
@@ -34,6 +42,24 @@ export default function MyTermProject () {
       setNextId(nextId+1);
     }
  
+    const deleteBook = (bookId) => {
+      setBooks(
+         books.filter((bTmp,index) =>
+        bTmp.id !== bookId
+      ) 
+    );
+    }
+
+    const editBook = (bookId) =>{
+      const bookTmp = books.filter(bTmp =>
+        bTmp.id == bookId
+      )
+      setBook(bookTmp[0]);
+      setBookId(bookId);
+    }
+
+   
+ 
     const bookItems = books.map((bObj,index) =>
          <div className="max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
            <a href="#">
@@ -45,11 +71,14 @@ export default function MyTermProject () {
              </a>
              <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">{bObj.bookDesc}</p>
              <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">{bObj.bookAuthor}</p>
-              <a href="#" className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-              Read more
-              <svg className="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
-              </svg>
+             <a href="#" className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+             onClick={(e)=>editBook(bObj.id)}>
+             [E] Edit
+              </a>
+              <a href="#" className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+               onClick={(e)=>deleteBook(bObj.id)}>
+             [D] Delete
+             <a/>
               </a>
             </div>
           </div>
@@ -90,6 +119,49 @@ export default function MyTermProject () {
        bookTitle: "", bookDesc: "", bookCover: "", bookPrice: 0.0, bookAuthor: ""
         });
     }
+
+     const updateBook = () => {
+      alert("Update : "+bookId);
+  const updatedBooks = books.map((bTmp) =>
+    bTmp.id === bookId
+      ? {
+          ...bTmp,
+          bookTitle: book.bookTitle,
+          bookDesc: book.bookDesc,
+          bookPrice: book.bookPrice,
+          bookAuthor: book.bookAuthor,
+          bookCover: book.bookCover,
+        }
+      : bTmp
+  );
+  setBooks(updatedBooks);
+  setBookId(0); 
+  resetFrom(); 
+};
+
+
+function BookDashboard({}){
+    return (
+      <div className="lg:w-1/4 md:w-1/2 sm:w-full grid grid-cols-1 m-4">
+        <div className="md:col-span-1 bg-white rounded-lg shadow-md p-4 grid grid-cols-2 text-blue-800 border border-blue-300 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400 dark:border-blue-800">
+          <div>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-16">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+            </svg>
+          </div>
+          <div>
+            <span className="sr-only">Info</span>
+            <div className="text-center">
+              <span className="text-7xl">{count}</span>
+            </div>
+            <div className="text-center">
+              Number of books
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
  
     return (
         <>
@@ -99,6 +171,8 @@ export default function MyTermProject () {
            student ID : {myStudID} <br />
            --
         </p>
+   <BookDashboard/>     
+      
  
      <div className="flex justify-center w-1/2  grid mx-auto h-100 overflow-auto rounded-2xl border border-gray-300 ">
             <form className="max-w-sm mx-auto">
@@ -144,12 +218,18 @@ export default function MyTermProject () {
           </div>
           <div>
             <div className="mb-5">
-                <button type="button" className="text-white bg-gradient-to-r from-purple-500 to-pink-500 hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+              { bookId !==0 ?
+              <button type="button" className="text-white bg-gradient-to-r from-purple-500 to-pink-500 hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+                onClick={updateBook}>
+                   [U] Update Book</button>
+                    :
+                    <button type="button" className="text-white bg-gradient-to-r from-purple-500 to-pink-500 hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
                 onClick={addBook}>
-                    Add New Book</button>
+                   [A] Add New Book</button>
+              }
                 <button type="button" className="text-white bg-gradient-to-r from-purple-500 to-pink-500 hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
                 onClick={resetFrom}>
-                    Clear</button>
+                   [C] Clear</button>
             </div>
           </div>
         </form>
